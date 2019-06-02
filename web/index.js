@@ -47,14 +47,14 @@ document.querySelector('#converterForm').addEventListener('submit', function han
         source_path: selectedFile.name,
         source_bin: selectedFile.data,
         ranges: [
-          { range: [ 0x20, 0x7f, 0x20 ] }
+          { range: [ 0x20, 0x7f, 0x21 ] }
         ]
       }
     ],
     size: 16,
     bpp: 4,
-    format: 'dump',
-    output: './'
+    format: 'lvgl',
+    output: 'alma.c'
   }, createCanvas);
 
   console.log(result);
