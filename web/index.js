@@ -1,11 +1,11 @@
-import './index.scss';
-import 'bootstrap';
+//import './index.scss';
+//import 'bootstrap';
 
 const convert = require('../lib/convert');
 
 let selectedFile = null;
 
-document.querySelector('#sourceFontFile').addEventListener('change', function handleFiles() {
+document.querySelector('#font_file').addEventListener('change', function handleFiles() {
   const fileList = this.files;
 
   if (!fileList.length) {
@@ -28,6 +28,12 @@ document.querySelector('#sourceFontFile').addEventListener('change', function ha
 
 }, false);
 
+function createCanvas(width, height) {
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  return canvas;
+}
 
 document.querySelector('#converterForm').addEventListener('submit', function handleSubmit(e) {
   e.preventDefault();
