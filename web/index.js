@@ -29,15 +29,6 @@ document.querySelector('#sourceFontFile').addEventListener('change', function ha
 }, false);
 
 
-// helper
-function createCanvas(width, height) {
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  return canvas;
-}
-
-
 document.querySelector('#converterForm').addEventListener('submit', function handleSubmit(e) {
   e.preventDefault();
 
