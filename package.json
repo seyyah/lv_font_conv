@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "parcel ./web/index.html --open",
-    "build": "parcel build ./web/index.html --public-url ./",
+    "build": "parcel build ./web/index.html ./web/content.html --public-url ./",
     "lint": "eslint .",
     "test": "npm run lint && nyc mocha",
     "coverage": "npm run test && nyc report --reporter html"
@@ -44,6 +44,7 @@
     "nyc": "^14.0.0",
     "parcel-bundler": "^1.12.3",
     "popper.js": "^1.14.7",
+    "posthtml-include": "^1.2.0",
     "roboto-fontface": "^0.10.0",
     "sass": "^1.17.3"
   }
