@@ -70,10 +70,6 @@ document.querySelector('#converterForm').addEventListener('submit', function han
   var _size = document.getElementById('height').value;
   var _bpp = document.getElementById('bpp').value;
   
-  console.log("name: " + _name);
-  console.log("size: " + _size);
-  console.log("bpp: " + _bpp);
-  
   let fcnt = 0;
   let fonts = [];  
   let r_str = document.getElementById('range_1').value;
@@ -84,8 +80,8 @@ document.querySelector('#converterForm').addEventListener('submit', function han
 	  let r_sub = r_str.split(",");
 	  if(r_str.length) {
 	  
-	  	  /* Parse the ranges. A range is array with 3 elements: [range start, range end, range remap start]
-	  	   * Multiple ranges just means an other 3 element in the array*/
+	  	  // Parse the ranges. A range is array with 3 elements: [range start, range end, range remap start]
+	  	  // Multiple ranges just means an other 3 element in the array 
 		  for(let i = 0; i < r_sub.length; i++) {
 		  	let r = r_sub[i].split("-");
 		  	fonts[fcnt].ranges[0].range[i * 3 + 0] = parseInt(r[0]);
@@ -124,7 +120,6 @@ document.querySelector('#converterForm').addEventListener('submit', function han
     output: _name
   }, createCanvas);
 
-console.log(result);
 var hiddenElement = document.createElement('a');
 
 hiddenElement.href = 'data:attachment/text,' + encodeURI(result[_name]);
