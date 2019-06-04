@@ -3,30 +3,55 @@
 
 const convert = require('../lib/convert');
 
-let selectedFile = null;
+let selectedFile1 = null;
+let selectedFile2 = null;
 
-document.querySelector('#font_file').addEventListener('change', function handleFiles() {
-  const fileList = this.files;
+function handleFiles1(e)
+{  
+  const fileList1 = this.files;
 
-  if (!fileList.length) {
-    selectedFile = null;
+  if (!fileList1.length) {
+    selectedFile1 = null;
     return;
   }
 
-  const file = fileList[0];
+  const file1 = fileList1[0];
 
-  const reader = new FileReader();
-  reader.onload = e => {
-    selectedFile = {
-      name: file.name,
-      size: file.size,
-      type: file.type,
-      data: Buffer.from(e.target.result)
+  const reader1 = new FileReader();
+  reader1.onload = e => {
+    selectedFile1 = {
+      data: e.target.result,
+      name: file1.name,
+      size: file1.size,
+      type: file1.type,
     };
   };
-  reader.readAsArrayBuffer(file);
+  reader1.readAsArrayBuffer(file1);
+}
 
-}, false);
+function handleFiles2(e)
+{
+  const fileList2 = this.files;
+
+  if (!fileList2.length) {
+    selectedFile2 = null;
+    return;
+  }
+
+  const file2 = fileList2[0];
+
+  const reader2 = new FileReader();
+  reader2.onload = e => {
+    selectedFile2 = {
+      data: e.target.result,
+      name: file2.name,
+      size: file2.size,
+      type: file2.type,
+    };
+  };
+  reader2.readAsArrayBuffer(file2);
+}
+
 
 function createCanvas(width, height) {
   const canvas = document.createElement('canvas');
@@ -34,29 +59,75 @@ function createCanvas(width, height) {
   canvas.height = height;
   return canvas;
 }
+ 
+document.querySelector("#font_file_1").addEventListener('change', handleFiles1, false);
+document.querySelector("#font_file_2").addEventListener('change', handleFiles2, false);
 
 document.querySelector('#converterForm').addEventListener('submit', function handleSubmit(e) {
   e.preventDefault();
 
-  /*eslint-disable no-console*/
-  console.log(selectedFile);
+  var _name = document.getElementById('name').value;
+  var _size = document.getElementById('height').value;
+  var _bpp = document.getElementById('bpp').value;
+  
+  console.log("name: " + _name);
+  console.log("size: " + _size);
+  console.log("bpp: " + _bpp);
+  
+  let fcnt = 0;
+  let fonts = [];  
+  let r_str = document.getElementById('range_1').value;
+  let syms = document.getElementById('symbols_1').value;
+  if(selectedFile1 && (r_str.length || syms.length)) { 
+      fonts[fcnt] = {source_path: selectedFile1.name, source_bin: selectedFile1.data, ranges: [{range : [], symbols:''}]};
+	  fonts[fcnt].ranges[0].symbols = syms;
+	  let r_sub = r_str.split(",");
+	  if(r_str.length) {
+		  for(let i = 0; i < r_sub.length; i++) {
+		  	let r = r_sub[i].split("-");
+		  	fonts[fcnt].ranges[0].range[i * 3 + 0] = parseInt(r[0]);
+		  	if(r[1]) fonts[fcnt].ranges[0].range[i * 3 + 1] = parseInt(r[1]);
+		  	else fonts[fcnt].ranges[0].range[i * 3 + 1] = parseInt(r[0]);
+		  	fonts[fcnt].ranges[0].range[i * 3 + 2] = parseInt(r[0]);
+		  }	
+	  }
+	  fcnt++;
+  }
+    
+  r_str = document.getElementById('range_2').value;
+  syms = document.getElementById('symbols_2').value;
+  if(selectedFile2 && (r_str.length || syms.length)) { 
+      fonts[fcnt] = {source_path: selectedFile2.name, source_bin: selectedFile2.data, ranges: [{range : [], symbols:''}]};
+	  fonts[fcnt].ranges[0].symbols = syms;
+	  if(r_str.length) {
+		  let r_sub = r_str.split(",");
+		  for(let i = 0; i < r_sub.length; i++) {
+		  	let r = r_sub[i].split("-");
+		  	fonts[fcnt].ranges[0].range[i * 3 + 0] = parseInt(r[0]);
+		  	if(r[1]) fonts[fcnt].ranges[0].range[i * 3 + 1] = parseInt(r[1]);
+		  	else fonts[fcnt].ranges[0].range[i * 3 + 1] = parseInt(r[0]);
+		  	fonts[fcnt].ranges[0].range[i * 3 + 2] = parseInt(r[0]);
+		  }	
+	  }
+  }
 
   const result = convert({
-    font: [
-      {
-        source_path: selectedFile.name,
-        source_bin: selectedFile.data,
-        ranges: [
-          { range: [ 0x20, 0x7f, 0x21 ] }
-        ]
-      }
-    ],
-    size: 16,
-    bpp: 4,
+    font: fonts,
+    size: parseInt(_size),
+    bpp: parseInt(_bpp),
+    no_compress : true,
+    no_prefilter : true,
     format: 'lvgl',
-    output: 'alma.c'
+    output: _name
   }, createCanvas);
 
-  console.log(result);
+console.log(result);
+var hiddenElement = document.createElement('a');
+
+hiddenElement.href = 'data:attachment/text,' + encodeURI(result[_name]);
+hiddenElement.target = '_blank';
+hiddenElement.download = _name + '.c';
+hiddenElement.click();
+
 
 }, false);
