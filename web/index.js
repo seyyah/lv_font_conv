@@ -83,6 +83,9 @@ document.querySelector('#converterForm').addEventListener('submit', function han
 	  fonts[fcnt].ranges[0].symbols = syms;
 	  let r_sub = r_str.split(",");
 	  if(r_str.length) {
+	  
+	  	  /* Parse the ranges. A range is array with 3 elements: [range start, range end, range remap start]
+	  	   * Multiple ranges just means an other 3 element in the array*/
 		  for(let i = 0; i < r_sub.length; i++) {
 		  	let r = r_sub[i].split("-");
 		  	fonts[fcnt].ranges[0].range[i * 3 + 0] = parseInt(r[0]);
