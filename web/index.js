@@ -75,12 +75,16 @@ document.querySelector('#converterForm').addEventListener('submit', function han
   let r_str = document.getElementById('range_1').value;
   let syms = document.getElementById('symbols_1').value;
   if(selectedFile1 && (r_str.length || syms.length)) { 
-      fonts[fcnt] = {source_path: selectedFile1.name, source_bin: selectedFile1.data, ranges: [{range : [], symbols:''}]};
+      fonts[fcnt] = {
+      	source_path: selectedFile1.name, 
+      	source_bin: selectedFile1.data, 
+      	ranges: [ { range : [], symbols:''} ] };
 	  fonts[fcnt].ranges[0].symbols = syms;
 	  let r_sub = r_str.split(",");
 	  if(r_str.length) {
 	  
-	  	  // Parse the ranges. A range is array with 3 elements: [range start, range end, range remap start]
+	  	  // Parse the ranges. A range is array with 3 elements: 
+	  	  //[range start, range end, range remap start]
 	  	  // Multiple ranges just means an other 3 element in the array 
 		  for(let i = 0; i < r_sub.length; i++) {
 		  	let r = r_sub[i].split("-");
@@ -96,7 +100,10 @@ document.querySelector('#converterForm').addEventListener('submit', function han
   r_str = document.getElementById('range_2').value;
   syms = document.getElementById('symbols_2').value;
   if(selectedFile2 && (r_str.length || syms.length)) { 
-      fonts[fcnt] = {source_path: selectedFile2.name, source_bin: selectedFile2.data, ranges: [{range : [], symbols:''}]};
+      fonts[fcnt] = {
+      	source_path: selectedFile2.name, 
+      	source_bin: selectedFile2.data, 
+      	ranges: [ { range : [], symbols:''} ] };
 	  fonts[fcnt].ranges[0].symbols = syms;
 	  if(r_str.length) {
 		  let r_sub = r_str.split(",");
