@@ -126,13 +126,21 @@ document.querySelector('#converterForm').addEventListener('submit', function han
     format: 'lvgl',
     output: _name
   }, createCanvas);
+  
+  var FileSaver = require('file-saver');
 
+  var blob = new Blob([result[_name]], {
+   type: "text/plain;charset=utf-8"
+  });
+
+  FileSaver.saveAs(blob, _name + '.c');
+/*
 var hiddenElement = document.createElement('a');
 
 hiddenElement.href = 'data:attachment/text,' + encodeURI(result[_name]);
 hiddenElement.target = '_blank';
 hiddenElement.download = _name + '.c';
 hiddenElement.click();
-
+*/
 
 }, false);
